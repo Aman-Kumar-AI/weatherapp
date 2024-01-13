@@ -13,7 +13,17 @@ def weather_at():
         'units':request.form.get('units')}
     response=requests.get(url,params=params)
     data=response.json()
-    return f"data: {data}"
+    if response.ok:
+        print(data)  # Add this line to print data to the console
+        return render_template("result.html", 
+                                   temperature=data['main']['temp'],
+                                   min_temperature=data['main']['temp_min'],
+                                   max_temperature=data['main']['temp_max'],
+                                   humidity=data['main']['humidity'],
+                                   clouds=data['clouds']['all'])
+    else:
+        print(data)  # Add this line to print data to the console
+        return render_template("result.html", error="Error fetching weather data. Please check your input and try again.")
 
 
 if __name__=="__main__":
